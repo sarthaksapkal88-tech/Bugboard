@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}New Issue — BugBoard{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+  <h2>Create New Issue</h2>
+
+  <form method="post" class="issue-form">
+    <div class="form-group">
+      <label for="title">Title <span class="required">*</span></label>
+      <input type="text" id="title" name="title" required placeholder="Brief summary of the issue"
+             maxlength="200" autofocus>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="5"
+                placeholder="Detailed description, steps to reproduce, expected behavior..."></textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select id="priority" name="priority">
+          <option value="Low">Low</option>
+          <option value="Medium" selected>Medium</option>
+          <option value="High">High</option>
+          <option value="Critical">Critical</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="created_by">Reported By</label>
+        <input type="text" id="created_by" name="created_by" placeholder="Your name" maxlength="100">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Create Issue</button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

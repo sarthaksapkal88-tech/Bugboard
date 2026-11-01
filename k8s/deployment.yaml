@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bugboard
+  labels:
+    app: bugboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bugboard
+  template:
+    metadata:
+      labels:
+        app: bugboard
+    spec:
+      containers:
+        - name: bugboard
+          # This image URI is updated by the CI/CD pipeline
+          image: <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/bugboard:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: SECRET_KEY
+              value: "bugboard-production-secret-2026"
+            - name: DATABASE_PATH
+              value: "/app/data/bugboard.db"
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3

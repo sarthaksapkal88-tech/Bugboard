@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Edit Issue #{{ issue.id }} — BugBoard{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+  <h2>Edit Issue #{{ issue.id }}</h2>
+
+  <form method="post" class="issue-form">
+    <div class="form-group">
+      <label for="title">Title <span class="required">*</span></label>
+      <input type="text" id="title" name="title" required value="{{ issue.title }}" maxlength="200">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="5">{{ issue.description }}</textarea>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="priority">Priority</label>
+        <select id="priority" name="priority">
+          {% for p in ['Low','Medium','High','Critical'] %}
+            <option value="{{ p }}" {{ 'selected' if issue.priority == p }}>{{ p }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status</label>
+        <select id="status" name="status">
+          {% for s in ['Open','In Progress','Resolved','Closed'] %}
+            <option value="{{ s }}" {{ 'selected' if issue.status == s }}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="form-meta">
+      <p>Created by <strong>{{ issue.created_by }}</strong> on {{ issue.created_at[:10] }}</p>
+      <p>Last updated: {{ issue.updated_at[:16] }}</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">Update Issue</button>
+      <a href="{{ url_for('index') }}" class="btn btn-outline">Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}
